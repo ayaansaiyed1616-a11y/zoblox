@@ -18,15 +18,29 @@ document.getElementById('signup').addEventListener('submit',async function(e){
   const password=document.getElementById('password').value;
   if(!/^[A-Za-z0-9_]{3,20}$/.test(username)){status.textContent='Use 3–20 letters, numbers or underscores.';return}
   if(!window.zobloxSupabase){status.textContent='Supabase is unavailable. Try again later.';return}
-  button.disabled=true;status.textContent='Creating account…';
+  button.disabled=true;status.textContent='Checking username…';
   try{
+    // Friendly preflight check only; the unique database index remains authoritative.
+    const {data:matches,error:lookupError}=await window.zobloxSupabase
+      .from('profiles').select('username').ilike('username',username).limit(20);
+    if(lookupError)throw lookupError;
+    if((matches||[]).some(function(row){return row.username.toLowerCase()===username.toLowerCase()})){
+      status.textContent='This username is already taken. Please choose another username.';
+      return;
+    }
+    status.textContent='Creating account…';
     const {error}=await window.zobloxSupabase.auth.signUp({
       email,password,
       options:{emailRedirectTo:location.origin+'/',data:{username}}
     });
     if(error)throw error;
-    status.textContent='If this email can be registered, check your inbox for a confirmation link. Your username will be reserved only after database validation.';
-  }catch(err){status.textContent=err.message||'Registration failed.'}
+    status.textContent='If this email can be registered, check your inbox for a confirmation link. Your username is reserved once registration succeeds.';
+  }catch(err){
+    const message=String(err&&err.message||'');
+    status.textContent=/duplicate key|profiles_username_lower_unique|already exists|username.*taken/i.test(message)
+      ? 'This username is already taken. Please choose another username.'
+      : 'Registration could not be completed. Please try again or use another username.';
+  }
   finally{button.disabled=false}
 });
 </script></body></html>
