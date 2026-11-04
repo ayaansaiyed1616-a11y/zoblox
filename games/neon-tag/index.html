@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Neon Tag Arena | Zoblox</title>
+<style>html,body{height:100%;margin:0;background:#07101f;color:#e8f9ff;font:18px system-ui}#loading{padding:28px;max-width:600px;margin:auto}</style>
+</head>
+<body>
+<div id="loading" role="status">Loading Neon Tag Arena...</div>
+<script>
+(async function(){
+  try{
+    const response=await fetch('./packed.b64',{cache:'default'});
+    if(!response.ok)throw Error('Game content unavailable (HTTP '+response.status+')');
+    const encoded=(await response.text()).trim();
+    const payload=Uint8Array.from(atob(encoded),x=>x.charCodeAt(0));
+    if(typeof DecompressionStream!=='function')throw Error('This browser does not support modern compressed web content.');
+    const stream=new Blob([payload]).stream().pipeThrough(new DecompressionStream('gzip'));
+    const html=await new Response(stream).text();
+    if(!html.startsWith('<!doctype html>'))throw Error('Invalid game content.');
+    document.open();document.write(html);document.close();
+  }catch(e){document.getElementById('loading').textContent='Neon Tag Arena could not start: '+e.message;}
+})();
+</script>
+</body>
+</html>
