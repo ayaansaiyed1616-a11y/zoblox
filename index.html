@@ -1661,7 +1661,7 @@ function showAuth(){
 }
 function authHome(){
   $('#authbody').innerHTML='<div class="spacer"></div><div class="stack">'+offNote()+
-   '<button class="abtn white" data-a="signup">Sign Up</button><button class="abtn" data-a="login">Log In</button><div class="offnote">Testing the new Supabase accounts? <a href="./auth-supabase.html" style="color:#8ab4ff">Supabase sign up</a> · <a href="./login-supabase.html" style="color:#8ab4ff">Supabase log in</a><br><small>Preview only: these accounts are not connected to game saves yet.</small></div><div class="legal"><button data-a="terms">Terms</button><span>-</span><button data-a="privacy">Privacy</button></div></div>';
+   '<button class="abtn white" data-a="signup">Sign Up</button><button class="abtn" data-a="login">Log In</button><div class="offnote">Try the new Supabase accounts: <a href="./auth-supabase.html" style="color:#8ab4ff">Sign up</a> · <a href="./login-supabase.html" style="color:#8ab4ff">Log in</a><br><small>Early access: Supabase accounts do not yet connect to game progress. Use the buttons above for existing game accounts.</small></div><div class="legal"><button data-a="terms">Terms</button><span>-</span><button data-a="privacy">Privacy</button></div></div>';
 }
 function authForm(kind){
   var su=kind==='signup',sw=AV_COLORS[0];
