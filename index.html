@@ -1849,7 +1849,7 @@ function openGame(id){
   $('#ptitle').textContent=g.title;
   var f=document.createElement('iframe');f.className='gframe';f.title=g.title;
   f.setAttribute('allow','fullscreen; gamepad; autoplay; clipboard-write');f.setAttribute('allowfullscreen','');
-  f.addEventListener('load',pushBoosts);
+  f.addEventListener('load',function(){pushBoosts();setTimeout(function(){if(S.frame===f)pushBoosts()},300);setTimeout(function(){if(S.frame===f)pushBoosts()},1200)});
   S.url=gameURL(g.file);f.src=S.url;$('#stage').appendChild(f);S.frame=f;
   $('#player').hidden=false;document.body.style.overflow='hidden';chrome();
   S.capTimer=setInterval(function(){captureSaves(id)},8000);
