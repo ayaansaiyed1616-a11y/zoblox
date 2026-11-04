@@ -1560,9 +1560,11 @@ var FRUIT=['Apple','Pear','Cherry','Strawberry','Lemon','Orange','Banana','Lime'
 var GAMES={
   oe:{id:'oe',title:'Orchard Evolution',tag:'Clicker',desc:'Pick fruit and evolve it through 30 forms.',file:'orchard-evolution',keys:['orchard-evolution-v2','orchard-evolution-settings','orchard-owner-note-v2']},
   rl:{id:'rl',title:'Rocket League',tag:'Sports',desc:'Rocket-powered car soccer.',file:'rocket-league',keys:[]},
-  bf:{id:'bf',title:'Blox Fruits',tag:'Action',desc:'Eat fruits, level up and sail three seas.',file:'blox-fruits',keys:['bloxfruits_save_v1']}
+  bf:{id:'bf',title:'Blox Fruits',tag:'Action',desc:'Eat fruits, level up and sail three seas.',file:'blox-fruits',keys:['bloxfruits_save_v1']},
+  nt:{id:'nt',title:'Neon Tag Arena',tag:'Arcade',desc:'Magical tag duels, 48 power-orbs and a hologram Target Studio.',file:'neon-tag',keys:['zoblox_neon_tag_v1']}
 };
-var ORDER=['oe','rl','bf'];
+var ORDER=['oe','rl','bf','nt'];
+THUMBS.nt='<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="ne" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0c173a"/><stop offset="1" stop-color="#124d70"/></linearGradient></defs><rect width="200" height="200" fill="url(#ne)"/><path d="M0 140L100 96l100 44v60H0z" fill="#0b1b32"/><path d="M0 140l100-44 100 44" fill="none" stroke="#5ca5bc" stroke-width="4"/><circle cx="100" cy="93" r="44" fill="#1a355a" stroke="#55ffe0" stroke-width="7"/><circle cx="100" cy="93" r="24" fill="#9ffaff"/><circle cx="100" cy="93" r="7" fill="#ffffff"/><path d="M100 35v16M100 135v16M42 93h16M142 93h16" stroke="#ffe884" stroke-width="5"/></svg>';
 var ITEM_COL={C:'#7ddc5a',I:'#ffd23f',D:'#ff7a7a',H:'#ff9ad0',P:'#7dd3fc',S:'#c4a3ff'};
 var BOARD_TITLES={xp:'Most XP',oe_picks:'Orchard: Most clicks',oe_tier:'Orchard: Highest evolution',bf_level:'Blox Fruits: Highest level',rl_goals:'Rocket League: Most goals',rl_wins:'Rocket League: Most wins'};
 var BOARD_ORDER=['xp','oe_picks','oe_tier','bf_level','rl_goals','rl_wins'];
@@ -1838,7 +1840,7 @@ function captureSaves(id){
 }
 
 /* ---------------- player ---------------- */
-function gameURL(file){var b=atob(GAME_DATA[file]),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return URL.createObjectURL(new Blob([a],{type:'text/html'}))}
+function gameURL(file){if(file==='neon-tag')return './games/neon-tag/index.html';var b=atob(GAME_DATA[file]),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return URL.createObjectURL(new Blob([a],{type:'text/html'}))}
 function openGame(id){
   var g=GAMES[id];if(!g||S.game||S.closing||!S.me)return;
   S.game=id;S.base={};S.carry={};S.activity=id;
@@ -1847,7 +1849,7 @@ function openGame(id){
   $('#ptitle').textContent=g.title;
   var f=document.createElement('iframe');f.className='gframe';f.title=g.title;
   f.setAttribute('allow','fullscreen; gamepad; autoplay; clipboard-write');f.setAttribute('allowfullscreen','');
-  f.addEventListener('load',pushBoosts);
+  f.addEventListener('load',function(){pushBoosts();setTimeout(function(){if(S.frame===f)pushBoosts()},300);setTimeout(function(){if(S.frame===f)pushBoosts()},1200)});
   S.url=gameURL(g.file);f.src=S.url;$('#stage').appendChild(f);S.frame=f;
   $('#player').hidden=false;document.body.style.overflow='hidden';chrome();
   S.capTimer=setInterval(function(){captureSaves(id)},8000);
@@ -2241,7 +2243,8 @@ var CMDS=[
   ['boost <user|all> god|infboost','Flag boosts: no damage, infinite boost.','boost all god 60'],['unboost <user|all> [type]','Remove boosts.','unboost alice damage'],['boosts [user|all]','See active boosts.','boosts all']]},
  {g:'Cheats',c:'#ffb9a0',d:'For your own account. Only admins can use these.',l:[
   ['cheat money [n]','Infinite Zobux (or an exact amount).','cheat money'],['cheat levels <n>','Add levels to yourself.','cheat levels 25'],['cheat xp [n]','Add XP to yourself.','cheat xp 5000'],
-  ['cheat damage|health|god|infboost','Infinite damage, health, god mode, infinite boost.','cheat god'],['cheat click|income|speed|power','Super picks, income, speed, shots.','cheat click'],['cheat <name> off','Turn one cheat off.','cheat god off'],['cheat all  /  cheat off','Everything on, or everything off.','cheat all'],
+  ['cheat damage|health|god|infboost','Infinite damage, health, god mode, infinite boost.','cheat god'],['cheat click|income|speed|power','Super picks, income, speed, shots.','cheat click'],
+  ['cheat speed|power|god|infboost','Neon Tag Arena: fast movement, wider magical tag area, no AI opponent score, quicker orb rhythm.','cheat speed'],['cheat <name> off','Turn one cheat off.','cheat god off'],['cheat all  /  cheat off','Everything on, or everything off.','cheat all'],
   ['cheat unlock','Own every avatar item.','cheat unlock'],['cheat top','Take #1 on every leaderboard.','cheat top']]},
  {g:'Leaderboards',c:'#c7b8ff',d:'Overpower or tidy the boards.',l:[
   ['setstat <user> <game.stat> <n>','oe.picks oe.tier oe.rebirths bf.level bf.kills rl.goals rl.wins','setstat alice bf.level 2550'],['lbhide <user>  /  lbshow <user>','Hide or restore someone.','lbhide alice'],['lbclear <board> confirm','Empty a board.','lbclear xp confirm'],['resetstats <user> [oe|bf|rl|all]','Reset a player\'s game stats and save.','resetstats alice bf']]},
