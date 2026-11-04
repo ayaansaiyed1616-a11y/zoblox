@@ -1543,7 +1543,7 @@ var THUMBS={"oe": "<svg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/s
 (function(){var st=document.createElement('style');st.textContent=ZAV.css;document.head.appendChild(st)})();
 var FORM_URL='https://forms.gle/tCpAjrEELh5YLc9B8';
 var ADMIN_HASH='7a37f1a6e9b001b49e10fb9987c99a510a9a5060f3f00c65268d3a4d8d38b83c';
-var API_BASE='';
+var API_BASE='https://vaxmbrdgitemezgmrbfw.supabase.co/functions/v1/zoblox-game-api';
 var $=function(s,r){return (r||document).querySelector(s)};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
@@ -1589,7 +1589,7 @@ function localKV(){var P='zk_';return{
     keys.sort(function(a,b){return a.key<b.key?-1:1});return Promise.resolve({keys:keys.slice(0,o.limit||256),complete:true,cursor:null})}}}
 
 /* ---------------- API ---------------- */
-function apiURL(path){var q='',i=path.indexOf('?');if(i>=0){q='&'+path.slice(i+1);path=path.slice(0,i)}return API_BASE+'/api?r='+encodeURIComponent(path)+q}
+function apiURL(path){var q='',i=path.indexOf('?');if(i>=0){q='&'+path.slice(i+1);path=path.slice(0,i)}return API_BASE+'?r='+encodeURIComponent(path)+q}
 async function api(method,path,body,opt){
   opt=opt||{};
   if(S.mode==='local'){
