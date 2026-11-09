@@ -1,0 +1,12 @@
+{
+  "name": "zoblox-static-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "astro build"
+  },
+  "dependencies": {
+    "astro": "^5.13.5"
+  }
+}
