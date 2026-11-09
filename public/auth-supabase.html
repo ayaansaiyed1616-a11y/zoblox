@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Zoblox — Supabase signup preview</title>
+<style>body{font:16px system-ui;background:#121317;color:white;min-height:100vh;display:grid;place-items:center;margin:0}main{background:#24262e;padding:28px;border-radius:14px;width:min(400px,90vw)}label{display:block;margin:16px 0 6px}input,button{box-sizing:border-box;width:100%;padding:12px;border-radius:8px;font:inherit}input{background:#17181d;color:white;border:1px solid #777}button{margin-top:20px;background:#00b06f;color:white;border:0;font-weight:bold}#status{min-height:2em;white-space:pre-wrap}</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./supabase-config.js"></script></head>
+<body><main><h1>Zoblox — Sign up</h1><p>Preview only. Your existing game accounts are not migrated.</p>
+<form id="signup"><label for="username">Username</label><input id="username" autocomplete="username" minlength="3" maxlength="20" pattern="[A-Za-z0-9_]{3,20}" required>
+<label for="email">Email</label><input id="email" type="email" autocomplete="email" required>
+<label for="password">Password</label><input id="password" type="password" autocomplete="new-password" minlength="8" required>
+<button id="submit" type="submit">Create account</button></form><p id="status" role="status" aria-live="polite"></p>
+<p><a href="./index.html" style="color:#8ab4ff">Back to game</a></p></main>
+<script>
+document.getElementById('signup').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const status=document.getElementById('status'),button=document.getElementById('submit');
+  const username=document.getElementById('username').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
+  if(!/^[A-Za-z0-9_]{3,20}$/.test(username)){status.textContent='Use 3–20 letters, numbers or underscores.';return}
+  if(!window.zobloxSupabase){status.textContent='Supabase is unavailable. Try again later.';return}
+  button.disabled=true;status.textContent='Checking username…';
+  try{
+    // Friendly preflight check only; the unique database index remains authoritative.
+    const {data:matches,error:lookupError}=await window.zobloxSupabase
+      .from('profiles').select('username').ilike('username',username).limit(20);
+    if(lookupError)throw lookupError;
+    if((matches||[]).some(function(row){return row.username.toLowerCase()===username.toLowerCase()})){
+      status.textContent='This username is already taken. Please choose another username.';
+      return;
+    }
+    status.textContent='Creating account…';
+    const {error}=await window.zobloxSupabase.auth.signUp({
+      email,password,
+      options:{emailRedirectTo:location.origin+'/',data:{username}}
+    });
+    if(error)throw error;
+    status.textContent='If this email can be registered, check your inbox for a confirmation link. Your username is reserved once registration succeeds.';
+  }catch(err){
+    const message=String(err&&err.message||'');
+    status.textContent=/duplicate key|profiles_username_lower_unique|already exists|username.*taken/i.test(message)
+      ? 'This username is already taken. Please choose another username.'
+      : 'Registration could not be completed. Please try again or use another username.';
+  }
+  finally{button.disabled=false}
+});
+</script></body></html>
