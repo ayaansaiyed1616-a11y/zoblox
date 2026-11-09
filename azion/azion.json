@@ -1,0 +1,68 @@
+{
+  "name": "zoblox",
+  "bucket": "zoblox",
+  "preset": "astro",
+  "env": "production",
+  "prefix": "20261109235727",
+  "rotate-prefix": true,
+  "not-first-run": true,
+  "function": [],
+  "application": {
+    "id": 1794267063,
+    "name": "zoblox"
+  },
+  "domain": {
+    "id": 0,
+    "name": "__DEFAULT__",
+    "domain_name": "",
+    "url": ""
+  },
+  "rt-purge": {
+    "purge_on_publish": true
+  },
+  "origin": null,
+  "rules-engine": {
+    "created": false,
+    "rules": [
+      {
+        "id": 1516853,
+        "name": "Deliver Static Assets and Set Cache Policy",
+        "phase": "request"
+      },
+      {
+        "id": 1516855,
+        "name": "Redirect to index.html",
+        "phase": "request"
+      },
+      {
+        "id": 1516856,
+        "name": "Redirect to index.html for Subpaths",
+        "phase": "request"
+      }
+    ]
+  },
+  "cache-settings": [
+    {
+      "id": 392071,
+      "name": "zoblox"
+    }
+  ],
+  "workloads": {
+    "id": 1794264251,
+    "name": "zoblox",
+    "domains": [],
+    "url": "https://ye2qgnqqmqy.map.azionedge.net",
+    "deployment_id": [
+      {
+        "id": 359482,
+        "name": "zoblox"
+      }
+    ]
+  },
+  "connectors": [
+    {
+      "id": 229080,
+      "name": "zoblox"
+    }
+  ]
+}
