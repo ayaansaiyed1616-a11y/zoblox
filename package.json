@@ -3,10 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "description": "Zoblox static HTML game portal. Deploy repository root directly to Dplooy; no Astro build required.",
   "scripts": {
-    "build": "astro build"
-  },
-  "dependencies": {
-    "astro": "^5.13.5"
+    "build": "node -e \"console.log('Zoblox static site: no build required; deploy repository root (.)')\""
   }
 }
