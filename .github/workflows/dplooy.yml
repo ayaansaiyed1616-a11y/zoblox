@@ -1,7 +1,7 @@
 # Deploys this repository to Dplooy on every push.
 # Added from the Dplooy dashboard (project -> GitHub -> Build).
 # Delete this file to turn the pipeline off.
-# Installed: 2026-11-18T23:42:08.101Z
+# Installed: 2026-11-18T23:53:33.304Z
 name: Deploy to Dplooy
 
 on:
@@ -19,11 +19,12 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build static site
+      - name: Install dependencies
         run: |
-          mkdir -p dist
-          cp index.html dist/index.html
-          cp -R games dist/games
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Build
+        run: mkdir -p dist && cp index.html dist/index.html && cp -R games dist/games
 
       - name: Package build output
         run: |
