@@ -24,7 +24,7 @@ jobs:
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
       - name: Build
-        run: echo "Static website - no build required
+        run: echo Static-site-ready
 
       - name: Package build output
         run: |
