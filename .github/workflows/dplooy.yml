@@ -1,7 +1,7 @@
 # Deploys this repository to Dplooy on every push.
 # Added from the Dplooy dashboard (project -> GitHub -> Build).
 # Delete this file to turn the pipeline off.
-# Installed: 2026-11-18T23:38:22.830Z
+# Installed: 2026-11-18T23:42:08.101Z
 name: Deploy to Dplooy
 
 on:
@@ -28,7 +28,7 @@ jobs:
 
       - name: Package build output
         run: |
-          cd "."
+          cd "dist"
           zip -r "$GITHUB_WORKSPACE/dplooy-deploy.zip" .
 
       - name: Deploy to Dplooy
