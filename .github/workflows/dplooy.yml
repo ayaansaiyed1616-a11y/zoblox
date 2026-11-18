@@ -15,21 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
-
       - name: Build
-        run: echo "Static website - no build required"
+        run: echo "Static HTML site - no build required; publish repository root"
 
       - name: Package build output
         run: |
           cd "."
-          zip -r "$GITHUB_WORKSPACE/dplooy-deploy.zip" .
+          zip -r "$GITHUB_WORKSPACE/dplooy-deploy.zip" . -x ".git/*" ".github/*" "node_modules/*" ".env" ".env.*"
 
       - name: Deploy to Dplooy
         run: |
