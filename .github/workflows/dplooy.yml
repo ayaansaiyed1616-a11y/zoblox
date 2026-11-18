@@ -1,7 +1,7 @@
 # Deploys this repository to Dplooy on every push.
 # Added from the Dplooy dashboard (project -> GitHub -> Build).
 # Delete this file to turn the pipeline off.
-# Installed: 2026-11-18T23:35:06.786Z
+# Installed: 2026-11-18T23:38:22.830Z
 name: Deploy to Dplooy
 
 on:
@@ -36,4 +36,4 @@ jobs:
           curl --fail-with-body -sS -X POST "https://api.dplooy.com/api/v1/deploy/zip" \
             -H "Authorization: Bearer ${{ secrets.DPLOOY_API_KEY }}" \
             -F "file=@dplooy-deploy.zip;type=application/zip" \
-            -F "name=mathproblems"
+            -F "name=zoblox"
