@@ -36,4 +36,4 @@ jobs:
           curl --fail-with-body -sS -X POST "https://api.dplooy.com/api/v1/deploy/zip" \
             -H "Authorization: Bearer ${{ secrets.DPLOOY_API_KEY }}" \
             -F "file=@dplooy-deploy.zip;type=application/zip" \
-            -F "name=mathproblems"
+            -F "name=zoblox"
