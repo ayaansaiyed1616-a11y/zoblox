@@ -19,12 +19,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Build static site
         run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
-
-      - name: Build
-        run: echo Static-site-ready
+          mkdir -p dist
+          cp index.html dist/index.html
+          cp -R games dist/games
 
       - name: Package build output
         run: |
