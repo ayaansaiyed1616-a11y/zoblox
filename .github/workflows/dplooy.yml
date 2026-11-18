@@ -1,7 +1,7 @@
 # Deploys this repository to Dplooy on every push.
 # Added from the Dplooy dashboard (project -> GitHub -> Build).
 # Delete this file to turn the pipeline off.
-# Installed: 2026-11-18T23:30:18.736Z
+# Installed: 2026-11-18T23:35:06.786Z
 name: Deploy to Dplooy
 
 on:
@@ -15,13 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
       - name: Build
-        run: echo "Static HTML site - no build required; publish repository root"
+        run: echo "Static website - no build required
 
       - name: Package build output
         run: |
           cd "."
-          zip -r "$GITHUB_WORKSPACE/dplooy-deploy.zip" . -x ".git/*" ".github/*" "node_modules/*" ".env" ".env.*"
+          zip -r "$GITHUB_WORKSPACE/dplooy-deploy.zip" .
 
       - name: Deploy to Dplooy
         run: |
